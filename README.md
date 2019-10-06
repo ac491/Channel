@@ -1,16 +1,10 @@
 # channel
 
-A new Flutter application.
+Channel, our idea is to create a platform where a writer can have full autonomy and creative freedom to provide their quality content to the masses . Channel taps into the brains of the world’s most insightful writers, thinkers, and storytellers to bring you the smartest takes on topics that matter. So whatever your interest, you can always find fresh thinking and unique perspectives.
 
-## Getting Started
+We are implementing it as a part of the course CSD402: Internet and Web Systems.
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.dev/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+# Team members:
+1.Arko Chatterjee
+2.Anubhav Dhuliya
+3.Ayush Malik
