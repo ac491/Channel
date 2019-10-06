@@ -5,6 +5,6 @@ Channel, our idea is to create a platform where a writer can have full autonomy 
 We are implementing it as a part of the course CSD402: Internet and Web Systems.
 
 # Team members:
-1.Arko Chatterjee
-2.Anubhav Dhuliya
-3.Ayush Malik
+1. Arko Chatterjee
+2. Anubhav Dhuliya
+3. Ayush Malik
