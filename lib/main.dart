@@ -26,19 +26,40 @@ class HomeState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
+    Icon actionIcon = new Icon(Icons.search);
+    Widget appBarTitle = new Text("Home");
     return Scaffold(
       appBar: AppBar(
-        title: new Text("Home"),
+        title: appBarTitle,
         backgroundColor: Colors.black,
         actions: <Widget>[
           Padding(
             padding: const EdgeInsets.only(right: 24.0),
             child: Icon(Icons.notifications_none, color: Colors.grey,),
           ),
-          Padding(
-            padding: const EdgeInsets.only(right: 12.0),
-            child: Icon(Icons.search, color: Colors.grey),
-          ),
+          IconButton(icon: actionIcon, onPressed:(){
+              setState(() {
+                if (actionIcon.icon == Icons.search){
+                  actionIcon = new Icon(Icons.close);
+                  appBarTitle = new TextField(
+                    style: new TextStyle(
+                      color: Colors.white,
+
+                    ),
+                    decoration: new InputDecoration(
+                        prefixIcon: new Icon(Icons.search,color: Colors.white),
+                        hintText: "Search...",
+                        hintStyle: new TextStyle(color: Colors.white)
+                    ),
+                  );}
+                else {
+                  actionIcon = new Icon(Icons.search);
+                  appBarTitle = new Text("Home");
+                }
+
+
+              });
+            } ,),
         ],
       ),
 
@@ -46,6 +67,7 @@ class HomeState extends State<MyHomePage> {
         itemBuilder: (context, position) {
 
           Blog blog = Blogs.getArticle(position);
+          Icon bookmarkIcon = new Icon(Icons.bookmark_border);
 
           return Padding(
             padding: const EdgeInsets.fromLTRB(0.0,0.5,0.0,0.5),
@@ -92,7 +114,13 @@ class HomeState extends State<MyHomePage> {
                               Text(blog.date + " . " + blog.readTime, style: TextStyle(color: Colors.black45, fontWeight: FontWeight.w500),)
                             ],
                           ),
-                          Icon(Icons.bookmark_border),
+                          IconButton(
+                            icon: bookmarkIcon, onPressed: () {
+                              setState(() {
+                                bookmarkIcon = new Icon(Icons.bookmark);
+                              });
+                          },
+                          ),
                         ],
                       )
                     ],
@@ -123,8 +151,17 @@ class HomeState extends State<MyHomePage> {
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Text("See profile", style: TextStyle(color: Colors.black45),),
-                      )
+                        child: InkWell(child: Text("See profile", style: TextStyle(color: Colors.black45),),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Profile()
+                              )
+                          );
+                        },
+                        )
+                        )
                     ],
                   ),
                 ),
@@ -179,6 +216,84 @@ class HomeState extends State<MyHomePage> {
             ],
           )
       ),
+    );
+  }
+}
+
+class Profile extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Scaffold(
+      appBar: AppBar(
+        title: new Text("Profile"),
+        backgroundColor: Colors.black,
+      ),
+
+      body:Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Container(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(32.0,64.0,32.0,16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Align( alignment: Alignment.topCenter,
+                  child: Icon(Icons.account_circle, size: 90.0, ),
+                  ),
+                  Align(
+                      alignment: Alignment.center,
+                      child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text("Arko Chatterjee", style: TextStyle(fontSize: 20.0), textAlign: TextAlign.center,),
+                      )
+                  ),
+                  Align(
+                    alignment: Alignment.center,
+                      child:Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text("Developer", style: TextStyle(color: Colors.black45), textAlign: TextAlign.center,),
+                  )
+                  )
+                ],
+              ),
+            ),
+          ),
+          Expanded(
+            child: Container(
+              color: Colors.black12,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(40.0,16.0,40.0,40.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text("Reputation: 1600", style: TextStyle(fontSize: 18.0, color: Colors.teal),),
+                    ),
+                    Divider(),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text("Interests: ML, Quantum Computing, AI", style: TextStyle(fontSize: 18.0),),
+                    ),
+                    Divider(),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text("Stats", style: TextStyle(fontSize: 18.0),),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text("Drafts", style: TextStyle(fontSize: 18.0),),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      )
+
     );
   }
 }
