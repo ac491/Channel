@@ -311,48 +311,88 @@ class DisplayBlog extends StatelessWidget {
         backgroundColor: Colors.black,
       ),
 
-      body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Flexible(
-                    flex: 1,
-                    child: Container(
+      body: new SingleChildScrollView(
+          child : Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Flexible(
+                      flex: 1,
+                      child: Container(
 
-                        child: Image.asset("assets/" + blog.image, fit: BoxFit.fill,)
+                          child: Image.asset("assets/" + blog.image, fit: BoxFit.fill,)
+                      ),
                     ),
-                  ),
-                ],
-              ),
+                  ],
+                ),
 
-            Padding(
-              padding: const EdgeInsets.fromLTRB(10.0,12.0,10.0,12.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Flexible(child: Text(blog.title, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 26.0),), flex: 3,),
-                ],
-              ),
-            ),
-
-            Padding(
+              Padding(
                 padding: const EdgeInsets.fromLTRB(10.0,12.0,10.0,12.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(blog.author, style: TextStyle(fontSize: 18.0),),
-                        Text(blog.date + " . " + blog.readTime, style: TextStyle(color: Colors.black45, fontWeight: FontWeight.w500),)
-                      ],
-                    ),
+                    Flexible(child: Text(blog.title, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 26.0),), flex: 3,),
                   ],
-                )
-            ),
-        ],
+                ),
+              ),
+
+              Padding(
+                  padding: const EdgeInsets.fromLTRB(10.0,12.0,10.0,12.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(blog.author, style: TextStyle(fontSize: 18.0),),
+                          Text(blog.date + " . " + blog.readTime, style: TextStyle(color: Colors.black45, fontWeight: FontWeight.w500),)
+                        ],
+                      ),
+                    ],
+                  )
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(10.0,12.0,10.0,12.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Flexible(child: Text(blog.content, style: TextStyle(fontWeight: FontWeight.normal, fontSize: 20.0),), flex: 3,),
+                  ],
+                ),
+              ),
+              Padding(padding: const EdgeInsets.fromLTRB(10.0,12.0,10.0,12.0),
+              child: Text('Comments',
+                style: new TextStyle(fontSize: 25.0),)),
+
+              Padding(
+              padding: const EdgeInsets.fromLTRB(10.0,12.0,10.0,12.0),
+              child: TextFormField(
+                    decoration: new InputDecoration(
+                    labelText: "Write your comments",
+                    fillColor: Colors.white,
+                    border: new OutlineInputBorder(
+                      borderRadius: new BorderRadius.circular(25.0),
+                      borderSide: new BorderSide(
+                      ),
+                    ),
+                  ),
+                  validator: (val) {
+                    if(val.length==0) {
+                      return "Comments cannot be empty";
+                    }else{
+                      return null;
+                    }
+                  },
+                  keyboardType: TextInputType.text,
+                  style: new TextStyle(
+                    fontFamily: "Poppins",
+                  ),
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }
@@ -365,8 +405,9 @@ class Blog {
   String date;
   String image;
   String readTime;
+  String content;
 
-  Blog(this.category, this.title, this.author, this.date, this.image, this.readTime);
+  Blog(this.category, this.title, this.author, this.date, this.image, this.readTime, this.content);
 
 }
 
@@ -406,9 +447,16 @@ class Blogs {
     "umbrella.jpeg"
   ];
 
+  static var content = [
+    "Lorem ipsum dolor sit amet, eam exerci voluptatum efficiantur ut, mel platonem omittantur mediocritatem id. Mazim appareat te ius, vim ea accusam imperdiet, dolor expetendis vix id. Vix case nominati ea. Causae fuisset ea per. Qui ad nullam regione, choro accumsan cu vim.",
+    "Lorem ipsum dolor sit amet, eam exerci voluptatum efficiantur ut, mel platonem omittantur mediocritatem id. Mazim appareat te ius, vim ea accusam imperdiet, dolor expetendis vix id. Vix case nominati ea. Causae fuisset ea per. Qui ad nullam regione, choro accumsan cu vim.",
+    "Lorem ipsum dolor sit amet, eam exerci voluptatum efficiantur ut, mel platonem omittantur mediocritatem id. Mazim appareat te ius, vim ea accusam imperdiet, dolor expetendis vix id. Vix case nominati ea. Causae fuisset ea per. Qui ad nullam regione, choro accumsan cu vim.",
+    "Lorem ipsum dolor sit amet, eam exerci voluptatum efficiantur ut, mel platonem omittantur mediocritatem id. Mazim appareat te ius, vim ea accusam imperdiet, dolor expetendis vix id. Vix case nominati ea. Causae fuisset ea per. Qui ad nullam regione, choro accumsan cu vim.",
+  ];
+
   static getArticle(int position) {
     return Blog(
         categoryTitles[position], titles[position], authorNames[position],
-        date[position], imageAssetName[position], readTimes[position]);
+        date[position], imageAssetName[position], readTimes[position], content[position]);
   }
 }
