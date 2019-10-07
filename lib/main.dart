@@ -23,43 +23,62 @@ class MyHomePage extends StatefulWidget {
 }
 
 class HomeState extends State<MyHomePage> {
+
+  bool isPressed = false;
+
+  _pressed() {
+    var newVal = true;
+    if(isPressed) {
+      newVal = false;
+    } else {
+      newVal = true;
+    }
+
+    setState(() {
+      isPressed = newVal;
+    });
+
+  }
+
+  Icon actionIcon = new Icon(Icons.search);
+  Widget appBarTitle = new Text("Home");
+
+  _searchUI() {
+    setState(() {
+      if (actionIcon.icon == Icons.search) {
+        actionIcon = new Icon(Icons.close);
+        appBarTitle = new TextField(
+          style: new TextStyle(
+            color: Colors.white,
+
+          ),
+          decoration: new InputDecoration(
+              prefixIcon: new Icon(Icons.search, color: Colors.white),
+              hintText: "Search...",
+              hintStyle: new TextStyle(color: Colors.white)
+          ),
+        );
+      }
+      else {
+        actionIcon = new Icon(Icons.search);
+        appBarTitle = new Text("Home");
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    Icon actionIcon = new Icon(Icons.search);
-    Widget appBarTitle = new Text("Home");
     return Scaffold(
       appBar: AppBar(
         title: appBarTitle,
         backgroundColor: Colors.black,
         actions: <Widget>[
+          IconButton(icon: actionIcon, onPressed:() => _searchUI(),),
           Padding(
             padding: const EdgeInsets.only(right: 24.0),
             child: Icon(Icons.notifications_none, color: Colors.grey,),
           ),
-          IconButton(icon: actionIcon, onPressed:(){
-              setState(() {
-                if (actionIcon.icon == Icons.search){
-                  actionIcon = new Icon(Icons.close);
-                  appBarTitle = new TextField(
-                    style: new TextStyle(
-                      color: Colors.white,
-
-                    ),
-                    decoration: new InputDecoration(
-                        prefixIcon: new Icon(Icons.search,color: Colors.white),
-                        hintText: "Search...",
-                        hintStyle: new TextStyle(color: Colors.white)
-                    ),
-                  );}
-                else {
-                  actionIcon = new Icon(Icons.search);
-                  appBarTitle = new Text("Home");
-                }
-
-
-              });
-            } ,),
         ],
       ),
 
@@ -115,11 +134,8 @@ class HomeState extends State<MyHomePage> {
                             ],
                           ),
                           IconButton(
-                            icon: bookmarkIcon, onPressed: () {
-                              setState(() {
-                                bookmarkIcon = new Icon(Icons.bookmark);
-                              });
-                          },
+                              icon: new Icon(isPressed ? Icons.bookmark: Icons.bookmark_border),
+                              onPressed: () => _pressed(),
                           ),
                         ],
                       )
