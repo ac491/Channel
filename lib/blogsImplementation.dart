@@ -705,6 +705,69 @@ class MyDisplayBlogValidation extends StatefulWidget {
 
 class DisplayBlogValidation extends State<MyDisplayBlogValidation> {
 
+  bool apiCall = false;
+
+  void progressIndicator(bool status) {
+    // If it was calling the api and now it's false
+    // that means the request has completed , and so , close the dialog
+    if (apiCall == true && status == false)
+      Navigator.pop(context);
+    setState(() {
+      apiCall = status;
+    });
+    showIndicator();
+  }
+
+  void showIndicator() {
+    if (apiCall) {
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        child: new Dialog(
+          child: Container(
+              height: 100.0,
+              child: new Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: new Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    new CircularProgressIndicator(),
+                    new Text("Loading"),
+                  ],
+                ),
+              )),
+        ),
+      );
+    }
+  }
+
+  _voteValid(String title, String type) async {
+    log('title : $title');
+    String url = 'http://10.6.1.15:6000/blogs/vote/' + type;
+    Map<String, String> headers = {"Content-type": "application/json"};
+    Map<String, String> jsonText = {'title': title};
+    progressIndicator(true);
+    Response response = await post(url, headers: headers, body: json.encode(jsonText));
+    progressIndicator(false);
+    int statusCode = response.statusCode;
+    if(statusCode == 200) {
+      showDialog(
+        context: context,
+        child: new AlertDialog(
+          title: Text('Vote'),
+          content: Text('Voted successfully'),
+          actions: [
+            new FlatButton(
+                child: const Text("Ok"),
+                onPressed: () => Navigator.pop(context)
+            ),
+          ],
+        ),
+      );
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -787,7 +850,7 @@ class DisplayBlogValidation extends State<MyDisplayBlogValidation> {
                     child:  RaisedButton(
                     child: new Text("Valid"),
                     color:  Colors.blueAccent[600],
-                    onPressed: null,
+                    onPressed: () => _voteValid(widget.blog.title, 'valid'),
                   ),)
                 ),
                 Padding(
@@ -795,7 +858,7 @@ class DisplayBlogValidation extends State<MyDisplayBlogValidation> {
                   child: RaisedButton(
                     child: new Text("Invalid"),
                     color:  Colors.blueAccent[600],
-                    onPressed: null,
+                    onPressed: () => _voteValid(widget.blog.title, 'invalid'),
                   ),
                 ),
               ],)
@@ -806,6 +869,39 @@ class DisplayBlogValidation extends State<MyDisplayBlogValidation> {
   }
 }
 
+const BASE_URL = 'http://10.6.1.15:6000';
+
+class APIValidate {
+  static Future getUsers() {
+    var url = BASE_URL + "/blogs";
+    return get(url);
+  }
+}
+
+class ValidBlog {
+  String title;
+  String author;
+  String content;
+  int invalid;
+  int valid;
+  int total_votes;
+
+  ValidBlog(this.title, this.author, this.content, this.invalid, this.valid,
+      this.total_votes);
+
+  ValidBlog.fromJson(Map json) :
+      title = json['title'],
+      author = json['author'],
+      content = json['content'],
+      valid = json['valid'],
+      invalid = json['invalid'],
+      total_votes = json['total_votes'];
+
+
+
+
+
+}
 
 class Blog {
   String category;
